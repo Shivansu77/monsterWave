@@ -36,13 +36,16 @@ app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/habits', habitRoutes);
 app.use('/api/entries', entryRoutes);
 
-const PORT = process.env.PORT || 5000;
+// Prepare DB connection once per cold start; awaited per request
+const dbReady = connectDB().catch((err) => {
+  console.error('DB connection failed', err);
+  throw err;
+});
 
-connectDB()
-  .then(() => {
-    app.listen(PORT, () => console.log(`API listening on :${PORT}`));
-  })
-  .catch((err) => {
-    console.error('DB connection failed', err);
-    process.exit(1);
-  });
+// Vercel serverless handler: ensure DB is ready, then pass to Express
+const handler = async (req, res) => {
+  await dbReady;
+  return app(req, res);
+};
+
+export default handler;
