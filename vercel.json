@@ -14,6 +14,10 @@
     {
       "src": "/health",
       "dest": "Backend/src/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "Backend/src/server.js"
     }
   ]
 }
