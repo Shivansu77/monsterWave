@@ -32,6 +32,10 @@ app.get('/health', (_req, res) => {
   res.json({ ok: true, time: new Date().toISOString() });
 });
 
+app.get('/', (_req, res) => {
+  res.json({ ok: true, message: 'Habit Tracker API' });
+});
+
 app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/habits', habitRoutes);
 app.use('/api/entries', entryRoutes);
@@ -43,9 +47,7 @@ const dbReady = connectDB().catch((err) => {
 });
 
 // Vercel serverless handler: ensure DB is ready, then pass to Express
-const handler = async (req, res) => {
+export default async function handler(req, res) {
   await dbReady;
   return app(req, res);
-};
-
-export default handler;
+}
