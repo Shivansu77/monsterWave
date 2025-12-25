@@ -10,13 +10,18 @@ import entryRoutes from './routes/entries.js';
 dotenv.config();
 
 const app = express();
+// Allow prod and local frontends; prepend env override if provided
+const defaultOrigins = [
+  'https://monsterwave.netlify.app',
+  'https://monster-wave-dej8.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:5174'
+];
+const allowedOrigins = process.env.FRONTEND_URL
+  ? [process.env.FRONTEND_URL, ...defaultOrigins]
+  : defaultOrigins;
 
-app.use(cors({ 
-  origin: process.env.FRONTEND_URL 
-    ? [process.env.FRONTEND_URL, 'http://localhost:5173', 'http://localhost:5174']
-    : ['http://localhost:5173', 'http://localhost:5174'], 
-  credentials: true 
-}));
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
 // Limit trial-heavy endpoints: 10 requests per hour per IP
