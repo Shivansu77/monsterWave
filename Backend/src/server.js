@@ -25,14 +25,7 @@ const allowedOrigins = process.env.FRONTEND_URL
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
-// Limit trial-heavy endpoints: 100 requests per 15 minutes per IP
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: 'Too many requests, please try again in 15 minutes.' }
-});
+// Auth rate limiting disabled for now to avoid 429s behind shared IPs
 
 app.get('/health', (_req, res) => {
   res.json({ ok: true, time: new Date().toISOString() });
@@ -42,7 +35,7 @@ app.get('/', (_req, res) => {
   res.json({ ok: true, message: 'Habit Tracker API' });
 });
 
-app.use('/api/auth', authLimiter, authRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/habits', habitRoutes);
 app.use('/api/entries', entryRoutes);
 
