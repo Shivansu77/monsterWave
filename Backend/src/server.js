@@ -25,13 +25,13 @@ const allowedOrigins = process.env.FRONTEND_URL
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
-// Limit trial-heavy endpoints: 10 requests per hour per IP
+// Limit trial-heavy endpoints: 100 requests per 15 minutes per IP
 const authLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 10,
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { error: 'Too many requests, please try again in an hour.' }
+  message: { error: 'Too many requests, please try again in 15 minutes.' }
 });
 
 app.get('/health', (_req, res) => {
