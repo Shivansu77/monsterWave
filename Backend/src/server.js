@@ -13,6 +13,7 @@ const app = express();
 // Allow prod and local frontends; prepend env override if provided
 const defaultOrigins = [
   'https://monsterwave.netlify.app',
+  'https://polite-kashata-33482d.netlify.app',
   'https://monster-wave-dej8.vercel.app',
   'http://localhost:5173',
   'http://localhost:5174'
