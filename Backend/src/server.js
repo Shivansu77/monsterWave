@@ -15,6 +15,7 @@ const defaultOrigins = [
   'https://monsterwave.netlify.app',
   'https://polite-kashata-33482d.netlify.app',
   'https://monster-wave-dej8.vercel.app',
+  'https://monster-wave-ax5nineuc-shivansu77s-projects.vercel.app',
   'http://localhost:5173',
   'http://localhost:5174'
 ];
